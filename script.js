@@ -49,25 +49,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Basic Form Submission Handling
+    // Google Form Submission Handling
     const contactForm = document.getElementById('contactForm');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // In a real application, you would send this data to a server
+            
             const btn = contactForm.querySelector('button[type="submit"]');
             const originalText = btn.textContent;
             
             btn.textContent = 'Sending...';
             btn.disabled = true;
-            
-            // Simulate network request
-            setTimeout(() => {
+
+            const nameValue = document.getElementById('name').value;
+            const emailValue = document.getElementById('email').value;
+            const serviceValue = document.getElementById('service').value;
+            const messageValue = document.getElementById('message').value;
+
+            // Combine service into the message field since Google form has 3 fields
+            let finalMessage = messageValue;
+            if (serviceValue) {
+                // Formatting the service nicely
+                const serviceLabel = document.querySelector(`#service option[value="${serviceValue}"]`).textContent;
+                finalMessage = `Service Requested: ${serviceLabel}\n\nMessage:\n${messageValue}`;
+            }
+
+            const formData = new FormData();
+            formData.append('entry.1395290130', nameValue); // Name
+            formData.append('entry.1840331055', emailValue); // Email
+            formData.append('entry.1727571199', finalMessage); // Message
+
+            const formUrl = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSeeiZyq3YNv6DKDGrjbkqw8S8YSb-2u9iJ2DKGL0Wd5uhYXdg/formResponse';
+
+            fetch(formUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                body: formData
+            }).then(() => {
                 alert('Thank you for contacting Catalyst Ventures. We will get back to you shortly!');
                 contactForm.reset();
                 btn.textContent = originalText;
                 btn.disabled = false;
-            }, 1500);
+            }).catch((error) => {
+                console.error('Error submitting form:', error);
+                alert('There was a problem submitting your message. Please try again.');
+                btn.textContent = originalText;
+                btn.disabled = false;
+            });
         });
     }
 });

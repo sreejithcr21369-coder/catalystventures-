@@ -159,10 +159,19 @@ ul {
 }
 
 .logo a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 1.8rem;
     font-weight: 700;
     font-family: 'Outfit', sans-serif;
     color: var(--text-light);
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    border-radius: 4px;
 }
 
 .logo span {
@@ -456,11 +465,18 @@ ul {
     margin-bottom: 40px;
 }
 
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
 .footer-brand h3 {
     font-size: 1.8rem;
     color: #fff;
     font-family: 'Outfit', sans-serif;
-    margin-bottom: 15px;
+    margin-bottom: 0;
 }
 
 .footer-brand span {
